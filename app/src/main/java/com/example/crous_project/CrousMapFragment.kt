@@ -8,9 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-private const val ARG_INFO = "info"
-
-class CrousInfoFragment : Fragment() {
+class CrousMapFragment : Fragment()/*, OnMapReadyCallback */{
     private var listener: OnFragmentInteractionListener? = null
     //private lateinit var mMap: GoogleMap
 
@@ -22,7 +20,7 @@ class CrousInfoFragment : Fragment() {
         //val mapFragment = MapFragment
         //   .findFragmentById(R.id.f_map) as SupportMapFragment
         // mapFragment.getMapAsync(this)
-        return inflater.inflate(R.layout.fragment_crous_info, container, false)
+        return inflater.inflate(R.layout.fragment_crous_map, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event

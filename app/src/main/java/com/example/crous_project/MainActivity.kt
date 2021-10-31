@@ -1,15 +1,26 @@
 package com.example.crous_project
 
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MainActivity : AppCompatActivity(), CrousCreator {
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.tabs.TabItem
+import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.activity_main.*
+import com.google.android.material.tabs.TabLayoutMediator
+
+class MainActivity : AppCompatActivity(), CrousCreator, CrousMapFragment.OnFragmentInteractionListener,CrousListFragment.OnFragmentInteractionListener,
+    CrousInfoFragment.OnFragmentInteractionListener{
     private var TAG = MainActivity::class.java.simpleName
     private val listCrous = ListCrous()
+
     private val MINIR = Crous(
         id = "r486",
         name = "MINI R",
@@ -56,24 +67,60 @@ class MainActivity : AppCompatActivity(), CrousCreator {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         listCrous.addCrous(MINIR)
         listCrous.addCrous(RULahitolle)
         listCrous.addCrous(LAnatidé)
+        //val toolbar: Toolbar = findViewById(R.id.toolbar)
+        //setSupportActionBar(toolbar)
+        newFrag()
 
-        btnCreateCrous = findViewById(R.id.a_main_btn_create_crous)
 
-        btnCreateCrous.setOnClickListener {
+       // btnCreateCrous = findViewById(R.id.a_main_btn_create_crous)
+
+       /* btnCreateCrous.setOnClickListener {
             displayCreateCrous()
-        }
+        }*/
 
         displayCrousList()
+
     }
+    fun newFrag() {
+
+        val adapter = ViewAdapter(supportFragmentManager)
+        adapter.addFragment(CrousListFragment(), "List")
+        adapter.addFragment(CrousMapFragment(), "Map")
+        adapter.addFragment(CrousInfoFragment(), "Info")
+        val viewPager:ViewPager =findViewById(R.id.viewPager)
+        val tabs:TabLayout=findViewById(R.id.tabs)
+
+        viewPager?.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
+        viewPager.adapter = adapter
+        tabs.setupWithViewPager(viewPager)
+
+            tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab) {
+                    viewPager.currentItem = tab.position
+
+                }
+                override fun onTabUnselected(tab: TabLayout.Tab) {
+
+                }
+                override fun onTabReselected(tab: TabLayout.Tab) {
+
+                }
+            })
+
+    }
+
+
+
     private fun displayCrousList() {
-        btnCreateCrous.visibility = View.VISIBLE
+      /*  btnCreateCrous.visibility = View.VISIBLE
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         val fragment = CrousListFragment.newInstance(listCrous.getAllCrous())
         fragmentTransaction.replace(R.id.a_main_lyt_fragment_container, fragment)
-        fragmentTransaction.commit()
+        fragmentTransaction.commit()*/
     }
 
 
@@ -96,15 +143,20 @@ class MainActivity : AppCompatActivity(), CrousCreator {
     }*/
 
     private fun displayCreateCrous() {
-        btnCreateCrous.visibility = View.GONE
+      /*  btnCreateCrous.visibility = View.GONE
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         val fragment = CreateCrousFragment.newInstance()
         fragmentTransaction.replace(R.id.a_main_lyt_fragment_container, fragment)
-        fragmentTransaction.commit()
+        fragmentTransaction.commit()*/
     }
 
     override fun onCrousCreated(crous: Crous) {
         listCrous.addCrous(crous);
         displayCrousList()
     }
+
+    override fun onFragmentInteraction(uri: Uri) {
+        TODO("Not yet implemented")
+    }
+
 }
